@@ -1,16 +1,29 @@
-from flask import render_template
+from flask import render_template, request, redirect, url_for
 from app import app
 import random
-import json
+from app.email_utils import send_email
+from app.logic import get_random_images, check_existing_assignment, log_assignment
 import os
 
 @app.route('/')
 def index():
-    images = get_random_images()
+    images = get_random_images(app.root_path)
     return render_template('index.html', images=images)
 
-def get_random_images():
-    # Load the image data from image_data.json
-    with open(os.path.join(app.root_path, 'image_data.json')) as f:
-        image_list = json.load(f)
-    return random.sample(image_list, 3)
+@app.route('/submit', methods=['GET', 'POST'])
+def submit():
+    if request.method == 'POST':
+        email = request.form['email']
+        itch_username = request.form['itch_username']
+        existing_assignment = check_existing_assignment(email)
+        if existing_assignment:
+            images = existing_assignment['images']
+            message = "These were your assigned images!"
+        else:
+            images = get_random_images(app.root_path)
+            log_assignment(email, itch_username, images)
+            send_email(email, images)
+            message = "Your inspiration challenge prompts are..."
+
+        return render_template('assignment.html', images=images, email=email, itch_username=itch_username, message=message)
+    return render_template('submit.html')

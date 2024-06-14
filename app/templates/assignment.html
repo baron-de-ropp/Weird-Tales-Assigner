@@ -6,14 +6,16 @@
     <title>Weird Tales Shadowdark Game Jam</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <style>
-        .buttons {
+        .assignment-container {
             margin-top: 20px;
         }
     </style>
 </head>
 <body>
     <main class="container">
-        <h1>Get Some Weird Tales Inspiration!</h1>
+        <h1>{{ message }}</h1>
+        <p>Email: {{ email }}</p>
+        <p>Itch.io Username: {{ itch_username }}</p>
         <div class="grid">
             {% for image in images %}
                 <article style="max-width: 200px; margin: auto;">
@@ -24,12 +26,9 @@
                 </article>
             {% endfor %}
         </div>
-        <form method="get" action="/">
-            <button type="submit">Give Me More Weird</button>
-        </form>
-        <form method="get" action="/submit">
-            <button type="submit">I'm ready for my game jam assignment...</button>
-        </form>
+        <div class="assignment-container">
+            <p>We have logged your assigned inspirational <italic>Weird Tales</italic> images! You can come back here and see them by issuing your email and itchio username again at the prior screen!<br><strong>Good luck on the game jam!</strong></p>
+        </div>
     </main>
 </body>
 </html>

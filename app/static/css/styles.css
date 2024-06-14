@@ -1,0 +1,19 @@
+.buttons {
+    margin-top: 20px;
+}
+.grid article {
+    margin: auto;
+}
+@media (min-width: 768px) {
+    .grid article {
+        max-width: 400px;
+    }
+}
+@media (max-width: 767px) {
+    .grid article {
+        max-width: 200px;
+    }
+}
+.assignment-container {
+    margin-top: 20px;
+}

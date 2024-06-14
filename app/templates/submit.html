@@ -5,20 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Weird Tales Shadowdark Game Jam</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-    <style>
-        .form-container {
-            margin-top: 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
     <main class="container">
         <h1>Submit Your Info...</h1>
-        <p>Once you provide your itchio username and email address, we will randomly assign you three "Weird Tales" cover illustrations and their Titles. You must select one and use it to inspire your submission to the jam!</p>
+        <p>Once you provide your Itch.io username, we will randomly assign you three "Weird Tales" cover illustrations and their titles. You must select one and use it to inspire your submission to the jam!</p>
         <div class="form-container">
             <form method="post" action="/submit">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
                 <label for="itch_username">Itch.io Username:</label>
                 <input type="text" id="itch_username" name="itch_username" required>
                 <button type="submit">Submit</button>

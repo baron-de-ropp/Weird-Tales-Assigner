@@ -1,0 +1,40 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - test
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up SSH for Production Server
+      if: github.ref == 'refs/heads/main'
+      env:
+          SSH_USER: ${{ secrets.SERVER_USER }}
+          SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_HOST: 137.184.150.45
+      run: |
+        mkdir -p ~/.ssh/
+        echo "$SSH_KEY" > ~/.ssh/do.key
+        chmod 600 ~/.ssh/do.key
+        cat >>~/.ssh/config <<END
+        Host digital_ocean
+          HostName $SSH_HOST
+          User $SSH_USER
+          IdentityFile ~/.ssh/do.key
+          StrictHostKeyChecking no
+        END
+        ssh digital_ocean "
+          cd /var/www/Weird-Tales-Assigner &&
+          git pull origin main &&
+          source venv/bin/activate &&
+          pip install -r requirements.txt &&
+          sudo systemctl restart Weird-Tales-Assigner.service
+        "
